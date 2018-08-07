@@ -19,6 +19,11 @@
 (setq auto-revert-verbose nil)
 
 
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+
+(ido-mode 1)
+
 ;; Install use-package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -184,7 +189,9 @@
   (projectile-mode)
   (setq-default projectile-enable-caching t
                 ;; Show project (if any) name in modeline
-                projectile-mode-line '(:eval (projectile-project-name))))
+                projectile-mode-line '(:eval (projectile-project-name)))
+  (projectile-global-mode t)
+  (global-set-key (kbd "s-t") 'projectile-find-file))
 
 
 ;; Magit: The only git interface you'll ever need
@@ -194,3 +201,72 @@
 (when (file-exists-p "~/.emacs.d/init-user.el")
   (setq user-custom-file "~/.emacs.d/init-user.el")
   (load user-custom-file))
+
+(tool-bar-mode -1)
+(toggle-scroll-bar -1)
+
+(defun back-to-indentation-or-beginning () (interactive)
+       (if (= (point) (progn (back-to-indentation) (point)))
+	   (beginning-of-line)))
+
+(defun indent-buffer ()
+  "Indent the currently visited buffer."
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
+(defun indent-region-or-buffer ()
+  "Indent a region if selected, otherwise the whole buffer."
+  (interactive)
+  (save-excursion
+    (if (region-active-p)
+	(progn (indent-region (region-beginning) (region-end)))
+      (progn (indent-buffer)))))
+
+(global-set-key (kbd "C-c n") 'indent-region-or-buffer)
+
+(defun move-line-up ()
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2))
+
+(defun move-line-down ()
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1))
+
+(global-set-key (kbd "M-S-<up>") 'move-line-up)
+(global-set-key (kbd "M-S-<down>") 'move-line-down)
+
+(defun kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer
+        (delq (current-buffer)
+              (remove-if-not 'buffer-file-name (buffer-list)))))
+
+
+(global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
+(global-set-key (kbd "RET") 'newline-and-indent)
+
+(use-package expand-region
+  :ensure t
+  :config
+  (global-set-key (kbd "C-=") 'er/expand-region))
+
+
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode t))
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(global-hl-line-mode)
+
+;; Disables audio bell
+(setq ring-bell-function
+      (lambda () (message "*beep*")))
+
+;; Set default font
+(set-default-font "Inconsolata 16")
