@@ -153,6 +153,7 @@
         cider-repl-result-prefix ";; => ")
 
   :config
+  (global-set-key (kbd "C-c k") 'cider-repl-clear-buffer)
   (add-hook 'cider-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
   (add-hook 'cider-repl-mode-hook #'company-mode)
