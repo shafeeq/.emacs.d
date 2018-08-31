@@ -191,8 +191,9 @@
   (setq-default projectile-enable-caching t
                 ;; Show project (if any) name in modeline
                 projectile-mode-line '(:eval (projectile-project-name)))
-  (projectile-global-mode t)
-  (global-set-key (kbd "s-t") 'projectile-find-file))
+  (projectile-global-mode t))
+
+
 
 
 ;; Magit: The only git interface you'll ever need
@@ -271,3 +272,8 @@
 
 ;; Set default font
 (set-default-font "Inconsolata 16")
+(use-package helm-projectile
+  :ensure t
+  :config
+  (global-set-key (kbd "s-t") 'helm-projectile))
+
