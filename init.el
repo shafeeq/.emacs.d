@@ -273,8 +273,11 @@
 
 ;; Set default font
 (set-default-font "Inconsolata 16")
+
 (use-package helm-projectile
   :ensure t
   :config
   (global-set-key (kbd "s-t") 'helm-projectile))
 
+(use-package align-cljlet
+  :ensure t)
