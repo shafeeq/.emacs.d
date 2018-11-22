@@ -24,6 +24,8 @@
 
 (ido-mode 1)
 
+(column-number-mode 1)
+
 ;; Install use-package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
