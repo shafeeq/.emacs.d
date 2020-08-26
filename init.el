@@ -149,8 +149,8 @@
         cider-stacktrace-fill-column 76
         ;; Stop error buffer from popping up while working in buffers other than REPL:
         nrepl-popup-stacktraces nil
-        nrepl-log-messages nil
-        nrepl-hide-special-buffers t
+        nrepl-log-messages t
+        nrepl-hide-special-buffers nil
         cider-repl-use-pretty-printing t
         cider-repl-result-prefix ";; => ")
 
