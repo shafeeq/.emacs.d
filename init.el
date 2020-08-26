@@ -283,3 +283,25 @@
 
 (use-package align-cljlet
   :ensure t)
+
+(defun unfill-paragraph (&optional region)
+      "Takes a multi-line paragraph and makes it into a single line of text."
+      (interactive (progn (barf-if-buffer-read-only) '(t)))
+      (let ((fill-column (point-max))
+            ;; This would override `fill-column' if it's an integer.
+            (emacs-lisp-docstring-fill-column t))
+        (fill-paragraph nil region)))
+(define-key global-map "\M-Q" 'unfill-paragraph)
+
+(use-package golden-ratio
+  :init
+  (golden-ratio-mode 1))
+
+;; disable backup files
+(setq make-backup-files nil)
+
+;; ido-vertical mode
+(use-package ido-vertical-mode
+  :init
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-C-p-up-and-down))
